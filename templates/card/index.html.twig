@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container">
+		<div class="card--container">
+			<div class="card--left">
+				<div class="card--item card--item__title ">
+					<h1>Drinks Menu
+					</h1>
+				</div>
+				<div></div>
+				<div class="card--item card--item__title">
+					<h2>LOS SHOOTERS</h2>
+				</div>
+
+				{% for cocktail in cocktails %}
+					{% if cocktail.category.id == 3 %}
+
+						<div class="card--item">{{cocktail.name}}<br>
+							<p>{{cocktail.ingredients}}</p>
+							<p>
+								{% set j = cocktail.alcoolIndex %}
+								{% for i in range (1, j) %}
+									<img src="{{asset('images/card/blue-skull.png')}}" alt="indicateur-d-alcool">
+								{% endfor %}
+							</p>
+						</div>
+						<div class="card--item">
+							<div class="card--item__price">
+								{{cocktail.price}}€
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+				<div class="card--item"></div>
+				<div class="card--item card--item__title">
+					<h2>LOS SOFTS</h2>
+				</div>
+				{% for cocktail in cocktails %}
+					{% if cocktail.category.id == 2 %}
+						<div class="card--item">{{cocktail.name}}
+							<br>
+							<p>{{cocktail.ingredients}}</p>
+						</div>
+						<div class="card--item">
+							<div class="card--item__price">
+								{{cocktail.price}}€
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+				<img src="{{asset('images/card/barrel.png')}}" alt=""><br>
+			</div>
+			<div class="card--right">
+				<div class="card--item card--item__title">
+					<h2>LOS CLASSICOS</h2>
+				</div>
+
+				{% for cocktail in cocktails %}
+					{% if cocktail.category.id == 1 %}
+						<div class="card--item cocktails">{{cocktail.name}}
+							<br>
+							<p>{{cocktail.ingredients}}</p>
+							<p>
+								{% set k = cocktail.alcoolIndex %}
+								{% for i in range (1, k) %}
+									<img src="{{asset('images/card/white-skull.png')}}" alt="indicateur-d-alcool">
+								{% endfor %}
+							</p>
+							{# <div class="hover--reveal images01">
+																																																																																																																																						<img class="hidden--img " src="{{asset('images/card/gringo-loco.jpeg')}}" alt=""></div> #}
+
+						</div>
+						<div class="card--item">
+							<div class="card--item__price">
+								{{cocktail.price}}€
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

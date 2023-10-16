@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+	<div class="container">
+		{% for message in app.flashes('success') %}
+			<div class="alert alert__success">
+				{{ message }}
+			</div>
+		{% endfor %}
+		{% for message in app.flashes('delete') %}
+			<div class="alert alert__delete">
+				{{ message }}
+			</div>
+		{% endfor %}
+		<div class="container--gallery">
+			{% for gallery in galleries %}
+				<div class="container--gallery__images">
+					<img src="{{ vich_uploader_asset(gallery, 'imageFile') }}" alt="galerie d'images">
+					<span class="container--gallery__author">
+						par
+						{% if gallery.author.pseudo %}
+							{{gallery.author.pseudo | capitalize}}
+						{% else %}
+							{{gallery.author.firstName | capitalize}}
+							{{gallery.author.lastName | slice(0,1) | capitalize}}.
+						{% endif %}
+					</span>
+					{% if is_granted("ROLE_USER") %}
+						{% if gallery.author.id == app.user.id %}
+							<a href="{{path('app_delete_gallery', {id: gallery.id, _csrf_token: csrf_token('delete-gallery')}) }}" class="button__delete button__delete--gallery">
+								<img src="{{ asset('images/gallery/gallery-delete.svg')}}" alt="supprimé image">
+							</a>
+						{% endif %}
+					{% endif %}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	{% if is_granted("ROLE_USER") %}
+		<a href="{{ path('app_add_gallery')}}" class="button__add">
+			+
+		</a>
+	{% endif %}
+{% endblock %}

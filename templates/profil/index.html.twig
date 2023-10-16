@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+{% block javascripts %}
+	<script src="{{ asset('js/profilSliders.js') }}" defer></script>
+{% endblock %}
+{% block title %}Hello ProfilController!
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="container--infos">
+			<div class="container--infos__user">
+				{% for message in app.flashes('success') %}
+					<div class="alert alert__success">
+						{{ message }}
+					</div>
+				{% endfor %}
+				<table>
+					<thead>
+						<tr>
+							<th colspan="2">Informations de votre compte</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Prénom</td>
+							<td>{{user.firstName}}</td>
+						</tr>
+						<tr>
+							<td>Nom</td>
+							<td>{{user.lastName}}</td>
+						</tr>
+						<tr>
+							<td>Pseudo</td>
+							<td>{{user.pseudo}}</td>
+						</tr>
+						<tr>
+							<td>Email</td>
+							<td>{{user.email}}</td>
+						</tr>
+						<tr>
+							<td>Date de création</td>
+							<td>{{user.createdAt | date('d/m/Y')}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<span>
+					<a href="{{path('app_register')}}">
+						<button>Modifier les informations</button>
+					</a>
+					<a href="{{path('app_edit_password')}}">
+						<button>Modifier mot de passe</button>
+					</a>
+					<a href="{{path('app_logout')}}">
+						<button class="container--user__logout">Déconnexion</button>
+					</a>
+				</span>
+			</div>
+
+			<div class="container--links">
+				<span id="selector--gallery">Galerie</span>
+				<span id="selector--article" class="active">Article</span>
+				<span id="selector--comment">Commentaire</span>
+			</div>
+			<div class="container--infos__content">
+				<div class="container--slider">
+					<div class="container--slider__gallery">
+						<div class="container--slider__content">
+							{% for gallery in galleries %}
+								{% if gallery.author.id == app.user.id %}
+									<div class="card">
+										<img src="{{ vich_uploader_asset(gallery, 'imageFile') }}" alt="galerie d'images" class="">
+										<span>
+											{{ gallery.createdAt | date('d/m/Y') }}
+										</span>
+										<a href="{{path('app_delete_gallery', {id: gallery.id, _csrf_token: csrf_token('delete-gallery')}) }}" class="button--delete button--delete__gallery">
+											Supprimé
+										</a>
+									</div>
+								{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+					<div class="container--slider__articles">
+						<div class="container--slider__content">
+							{% for article in articles %}
+								{% if article.author.id == app.user.id %}
+									<div class="card">
+										<h2>{{ article.title}}</h2>
+										<img src="{{ vich_uploader_asset(article, 'imageFile') }}" alt="galerie d'images">
+										<p>{{ article.content | striptags | raw |slice(0,150) }}...</p>
+										<span>
+											{{ article.createdAt | date('d/m/Y') }}
+										</span>
+										<span class="container--card__action">
+											<a href="{{path('app_edit_articles', {slug: article.slug })}}" class="button--edit">Modifier</a>
+											<a href="{{path('app_delete_gallery', {id: article.id, _csrf_token: csrf_token('delete-gallery')}) }}" class="button--delete button--delete__gallery">
+												Supprimé
+											</a>
+										</span>
+									</div>
+								{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+					<div class="container--slider__comment">
+						<div class="container--slider__content">
+							Commentaire
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}
