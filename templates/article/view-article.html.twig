@@ -20,20 +20,26 @@
 					par
 					{% if articles.author.pseudo %}
 						{{articles.author.pseudo | capitalize}}
-					{% else %}
-						{{articles.author.firstName | capitalize}}
-						{{articles.author.lastName | slice(0,1) | capitalize}}.
 					{% endif %}
 				</span>
 				<span class="container--article__actions">
 					{% if is_granted("ROLE_USER") %}
-						<a href="{{path('app_add_articles')}}" class="button--edit">Modifier</a>
-						<a href="{{path('app_add_articles')}}" class="button--delete">Supprimer</a>
+						<a href="{{path('app_edit_articles', {slug: articles.slug })}}" class="button--edit">Modifier</a>
+						<a href="{{path('app_delete_articles', {slug: articles.slug, _csrf_token: csrf_token('delete-article') })}}" class="button--delete">Supprimer</a>
 					{% endif %}
 				</span>
 			</span>
-		</div>
-		{{form(createComment)}}
+			{{form(form)}}
+				{% for comment in comments %}
+					{% if comment.article.id == articles.id %}
+						<div>
+							{{comment.content}}<br>
+							{{comment.author.pseudo}}
+						</div>
+					{% endif %}
+
+				{% endfor %}
+			</div>
 		</div>
 		{% if is_granted("ROLE_USER") %}
 			<a href="{{path('app_add_articles')}}" class="button__add">+</a>

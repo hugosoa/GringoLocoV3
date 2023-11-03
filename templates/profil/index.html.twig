@@ -104,7 +104,22 @@
 					</div>
 					<div class="container--slider__comment">
 						<div class="container--slider__content">
-							Commentaire
+							{% for comment in comments %}
+								{% if comment.author.id == app.user.id %}
+									<div class="card">
+										<div class="container--comment__article">
+											<h2>{{comment.article.title}}</h2>
+											<img src="{{ vich_uploader_asset(comment.article, 'imageFile') }}" alt="galerie d'images">
+											<p>{{ comment.article.content | striptags | raw |slice(0,150) }}...</p>
+										</div>
+
+										<h3>{{ comment.content}}</h2>
+										<span>
+											{{ comment.createdAt | date('d/m/Y') }}
+										</span>
+									</div>
+								{% endif %}
+							{% endfor %}
 						</div>
 					</div>
 				</div>

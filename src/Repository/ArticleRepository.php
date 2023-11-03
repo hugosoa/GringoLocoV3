@@ -21,17 +21,17 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-    // public function findLastPostsPaginated()
-    // {
-    //     return $this->createQueryBuilder('p')
-    //         ->andWhere('p.active = :active')
-    //         ->setParameter('active', true)
-    //         ->orderBy('p.createdAt', 'DESC')
-    //         //->setMaxResults($nb)
-    //         ->getQuery()
-    //         //->getResult()
-    //     ;
-    // }
+    public function findLastPostsPaginated()
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.active = :active')
+            ->setParameter('active', true)
+            ->orderBy('p.createdAt', 'DESC')
+            //->setMaxResults($nb)
+            ->getQuery()
+            //->getResult()
+        ;
+    }
 
     //    /**
     //     * @return Article[] Returns an array of Article objects

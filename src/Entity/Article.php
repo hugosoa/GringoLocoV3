@@ -42,9 +42,6 @@ class Article
     #[Gedmo\Slug(fields: ['title'])]
     private ?string $slug = null;
 
-    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Comment::class)]
-    private Collection $comments;
-
     #[Vich\UploadableField(mapping: 'posts', fileNameProperty: 'imageName', size: 'imageSize')]
     private ?File $imageFile = null;
 
@@ -53,6 +50,14 @@ class Article
 
     #[ORM\Column(type: 'integer')]
     private ?int $imageSize = null;
+
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Comment::class)]
+    private Collection $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
@@ -97,11 +102,6 @@ class Article
     public function getImageSize(): ?int
     {
         return $this->imageSize;
-    }
-
-    public function __construct()
-    {
-        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -210,4 +210,8 @@ class Article
 
         return $this;
     }
+
+
+
+
 }

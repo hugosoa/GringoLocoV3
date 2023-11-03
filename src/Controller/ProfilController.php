@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\EditPasswordFormType;
 use App\Repository\ArticleRepository;
+use App\Repository\CommentRepository;
 use App\Repository\GalleryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class ProfilController extends AbstractController
 {
     #[Route('/profil', name: 'app_profil')]
-    public function index(ArticleRepository $articleRepository, GalleryRepository $galleryRepository): Response
+    public function index(ArticleRepository $articleRepository, GalleryRepository $galleryRepository, CommentRepository $commentRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         if (!$this->getUser()) {
@@ -27,7 +28,8 @@ class ProfilController extends AbstractController
             [
                 'user' => $this->getUser(),
                 'galleries' => $galleryRepository->findBy([], ['id' => 'DESC']),
-                'articles' => $articleRepository->findBy([], ['id' => 'DESC'])
+                'articles' => $articleRepository->findBy([], ['id' => 'DESC']),
+                'comments' => $commentRepository->findBy([], ['id' => 'DESC'])
             ]
 
         );
