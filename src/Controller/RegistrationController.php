@@ -63,6 +63,8 @@ class RegistrationController extends AbstractController
                 $authenticator,
                 $request
             );
+
+            $this->addFlash('success', 'Compte crée avec succès, validation du mail requise');
         }
 
         return $this->render('registration/register.html.twig', [

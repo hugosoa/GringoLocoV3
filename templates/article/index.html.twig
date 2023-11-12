@@ -1,70 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ArticleController!
+{% block title %}Gringo Loco - Actualités !
 {% endblock %}
 
 {% block body %}
 	<div class="container">
-		{% for message in app.flashes('success') %}
-			<div class="alert alert--success">
-				{{ message }}
-			</div>
-		{% endfor %}
-		{% for message in app.flashes('edit') %}
-			<div class="alert alert--edit">
-				{{ message }}
-			</div>
-		{% endfor %}
-		{% for message in app.flashes('delete') %}
-			<div class="alert alert--delete">
-				{{ message }}
-			</div>
-		{% endfor %}
 		<div class="container--article">
-
-
+			{% for message in app.flashes('success') %}
+				<div class="alert alert--success">
+					{{ message }}
+				</div>
+			{% endfor %}
+			{% for message in app.flashes('edit') %}
+				<div class "alert alert--edit">
+					{{ message }}
+				</div>
+			{% endfor %}
+			{% for message in app.flashes('delete') %}
+				<div class="alert alert--delete">
+					{{ message }}
+				</div>
+			{% endfor %}
 			{% for article in articles %}
-				<h2>{{ article.title}}</h2>
-				<a href="{{path('app_view_articles', {slug: article.slug}) }}" class="container--article__link">
-					<img src="{{ vich_uploader_asset(article) }}" alt="{{ article.title }}">
-				</a>
-				{% if article.content | length > 300 %}
-					<p>{{ article.content|u.truncate(300, '...', false) | raw}}
-						<a href="{{path('app_view_articles', {slug: article.slug}) }}">Voir plus</a>
-					</p>
-				{% else %}
-					<p>{{article.content | raw}}..
-						<a href="{{path('app_view_articles', {slug: article.slug}) }}">Voir plus</a>
-					</p>
-				{% endif %}
-
-
-				<span class="container--article__infos">
-					<span class="container--article__author">
-						par
-						{% if article.author.pseudo %}
-							{{article.author.pseudo | capitalize}}
+				<div class="container--article__card">
+					<h2>{{ article.title }}</h2>
+					<a href="{{ path('app_view_articles', { slug: article.slug }) }}" class="container--article__link">
+						<img src="{{ vich_uploader_asset(article) }}" alt="{{ article.title }}">
+					</a>
+					<p>
+						{% if article.content | length > 300 %}
+							{{ article.content | u.truncate(300, '...', false) | raw }}
+							<a href="{{ path('app_view_articles', { slug: article.slug }) }}">Voir plus</a>
 						{% else %}
-							{{article.author.firstName | capitalize}}
-							{{article.author.lastName | slice(0,1) | capitalize}}.
+							{{ article.content | raw }}
+							<a href="{{ path('app_view_articles', { slug: article.slug }) }}">Voir plus</a>
 						{% endif %}
-					</span>
-					<span class="container--article__actions">
-						{% if is_granted("ROLE_USER") %}
-							{% if article.author.id == app.user.id %}
-								<a href="{{path('app_edit_articles', {slug: article.slug })}}" class="button--edit">Modifier</a>
-								<a href="{{path('app_delete_articles', {slug: article.slug, _csrf_token: csrf_token('delete-article') })}}" class="button--delete">Supprimer</a>
+					</p>
+					<span class="container--article__infos">
+						<span class="container--article__author">
+							par
+							{% if article.author.pseudo %}
+								{{ article.author.pseudo | capitalize }}
+							{% else %}
+								{{ article.author.firstName | capitalize }}
+								{{ article.author.lastName | slice(0,1) | capitalize }}.
 							{% endif %}
-						{% endif %}
+						</span>
+						<span class="container--article__actions">
+							{% if is_granted("ROLE_USER") %}
+								{% if article.author.id == app.user.id %}
+									<a href="{{ path('app_edit_articles', { slug: article.slug }) }}" class="button--edit">Modifier</a>
+									<a href="{{ path('app_delete_articles', { slug: article.slug, _csrf_token: csrf_token('delete-article') }) }}" class="button--delete">Supprimer</a>
+								{% endif %}
+							{% endif %}
+						</span>
 					</span>
-				</span>
+				</div>
 			{% endfor %}
 			{{ knp_pagination_render(articles) }}
 		</div>
+
 	</div>
 
-	{% if is_granted("ROLE_USER") %}
-		<a href="{{path('app_add_articles')}}" class="button--add">+</a>
+	{% if is_granted("ROLE_EDITOR") %}
+		<a href="{{ path('app_add_articles') }}" class="button--add">+</a>
 	{% endif %}
-
 {% endblock %}

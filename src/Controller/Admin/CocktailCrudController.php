@@ -30,11 +30,12 @@ class CocktailCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->setDisabled()->onlyWhenUpdating()->hideOnindex(),
-            TextField::new('name'),
-            MoneyField::new('price')->setCurrency('EUR'),
-            AssociationField::new('category'),
-            AssociationField::new('ingredient'),
-            IntegerField::new('alcoolIndex')
+            TextField::new('name', 'Nom'),
+            TextField::new('price', 'Prix'),
+            AssociationField::new('category', 'Catégorie'),
+            AssociationField::new('ingredient', 'Ingrédient'),
+            AssociationField::new('link', 'Lien vers l\'article'),
+            IntegerField::new('alcoolIndex', 'Taux d\'alcool')
 
         ];
     }

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -16,11 +17,21 @@ class Reservation
     #[ORM\Column(length: 50)]
     private ?string $numTel = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $resName = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $specialAsk = null;
+
+    #[ORM\Column]
+    private ?int $nbrPeople = null;
+
+    #[ORM\Column]
+    #[Gedmo\Timestampable(on: "create")]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $bookedAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    private ?User $author = null;
 
     public function getId(): ?int
     {
@@ -39,18 +50,6 @@ class Reservation
         return $this;
     }
 
-    public function getResName(): ?string
-    {
-        return $this->resName;
-    }
-
-    public function setResName(string $resName): static
-    {
-        $this->resName = $resName;
-
-        return $this;
-    }
-
     public function getSpecialAsk(): ?string
     {
         return $this->specialAsk;
@@ -59,6 +58,54 @@ class Reservation
     public function setSpecialAsk(?string $specialAsk): static
     {
         $this->specialAsk = $specialAsk;
+
+        return $this;
+    }
+
+    public function getNbrPeople(): ?int
+    {
+        return $this->nbrPeople;
+    }
+
+    public function setNbrPeople(int $nbrPeople): static
+    {
+        $this->nbrPeople = $nbrPeople;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getBookedAt(): ?\DateTimeInterface
+    {
+        return $this->bookedAt;
+    }
+
+    public function setBookedAt(\DateTimeInterface $bookedAt): self
+    {
+        $this->bookedAt = $bookedAt;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
 
         return $this;
     }

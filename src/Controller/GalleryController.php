@@ -39,6 +39,12 @@ class GalleryController extends AbstractController
             $em = $doctrine->getManager();
             $em->persist($gallery);
             $em->flush();
+
+            $this->addFlash(
+                'success',
+                'La photo a été ajoutée avec succès'
+            );
+
             return $this->redirectToRoute('app_gallery');
         }
 
@@ -59,12 +65,13 @@ class GalleryController extends AbstractController
             $em = $doctrine->getManager();
             $em->remove($gallery);
             $em->flush();
+
+            $this->addFlash(
+                'delete',
+                'La photo a été supprimée avec succès'
+            );
         }
 
-        $this->addFlash(
-            'delete',
-            'Photo supprimé avec succès'
-        );
 
         return $this->redirectToRoute('app_gallery');
     }

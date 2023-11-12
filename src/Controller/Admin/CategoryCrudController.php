@@ -28,7 +28,7 @@ class CategoryCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->setDisabled()->onlyWhenUpdating()->hideOnindex(),
-            TextField::new('name'),
+            TextField::new('name', 'Nom'),
         ];
     }
 }

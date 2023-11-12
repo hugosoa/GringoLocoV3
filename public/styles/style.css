@@ -34,6 +34,32 @@ a {
   border-bottom: solid 1px #3E667D;
 }
 
+.d-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.alert {
+  z-index: 15;
+  font-size: 1.2rem;
+  font-family: "Baloo 2";
+  padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+  border-radius: 10px;
+}
+.alert--success {
+  background-color: #bdfdd5;
+  color: #005B89;
+}
+.alert--edit {
+  background-color: #729cf7;
+  color: #EEE9E1;
+  border: solid 1px #6492f6;
+}
+.alert--delete {
+  background-color: #ff6161;
+  color: #EEE9E1;
+}
+
 form {
   border-radius: 10px;
   border: solid 1px #e8e2d7;
@@ -83,6 +109,22 @@ input {
   line-height: 1.3rem;
 }
 
+textarea {
+  color: #005B89;
+  font-size: 1rem;
+  border: solid 1px #e5ddd1;
+  border-radius: 5px;
+  padding: 0.2rem;
+  line-height: 1.3rem;
+  height: 6rem;
+  width: 100%;
+}
+
+select {
+  border: none;
+  width: 100%;
+}
+
 input::placeholder {
   font-style: italic;
 }
@@ -94,6 +136,35 @@ input[type=password] {
   input[type=password] {
     font-size: 3rem;
   }
+}
+
+.loader {
+  width: 100%;
+  height: 100vh;
+  background-color: #131313;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: hidden;
+}
+.loader img {
+  animation: shake 0.5s ease-in-out infinite;
+  width: 5%;
+}
+.loader .progress-container {
+  width: 100%;
+  background-color: #f1f1f1;
+}
+.loader .progress-bar {
+  width: 0;
+  height: 30px;
+  background-color: #4caf50;
+}
+
+.display--none {
+  display: none;
 }
 
 .button--edit {
@@ -142,12 +213,25 @@ nav {
   left: 0;
   z-index: 1;
 }
+@media screen and (max-width: 767px) {
+  nav {
+    transform: translateX(-100%);
+    transition: 0.2s;
+  }
+}
 nav .nav--links {
   display: flex;
   width: 100%;
   height: 150px;
   justify-content: space-around;
   align-items: center;
+}
+@media screen and (max-width: 767px) {
+  nav .nav--links {
+    flex-direction: column;
+    height: 100vh;
+    font-size: 2rem;
+  }
 }
 nav .nav--links a {
   text-decoration: none;
@@ -156,9 +240,104 @@ nav .nav--links a {
   font-size: 1.2rem;
   border: none;
 }
+@media screen and (max-width: 767px) {
+  nav .nav--links a {
+    font-size: 1.5rem;
+  }
+}
 nav img {
   width: 140px;
   height: 140px;
+}
+@media screen and (max-width: 767px) {
+  nav img {
+    display: none;
+  }
+}
+
+nav.active {
+  transform: translateX(0%);
+  transition: 0.2s;
+}
+
+@media screen and (max-width: 767px) {
+  .nav--open {
+    height: 2.5rem;
+    width: 2.5rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    position: fixed;
+    top: 5%;
+    left: 7%;
+    z-index: 50;
+    transform: translate(-50%, -50%);
+  }
+  .nav--open .line {
+    position: absolute;
+    display: block;
+    width: 80%;
+    height: 0.3rem;
+    background-color: #6DAFE1;
+    border-radius: 10px;
+  }
+  .nav--open .l1 {
+    top: 0%;
+  }
+  .nav--open .l2 {
+    top: 25%;
+  }
+  .nav--open .l3 {
+    top: 50%;
+  }
+}
+.nav--open.active .l1 {
+  top: 0%;
+  width: 30%;
+  border-radius: 10px 10px 0 0;
+  animation: navl1 0.3s forwards;
+}
+@keyframes navl1 {
+  0% {
+    transform: translateY(0px);
+    width: 80%;
+    border-radius: 0px 0px 0px 0px;
+  }
+  100% {
+    transform: translateY(2px);
+    width: 30%;
+    border-radius: 10px 10px 0 0;
+  }
+}
+.nav--open.active .l2 {
+  width: 35%;
+  border-radius: 0px 0px 0 0;
+  animation: navl2 0.3s forwards;
+}
+@keyframes navl2 {
+  0% {
+    width: 80%;
+  }
+  100% {
+    width: 35%;
+  }
+}
+.nav--open.active .l3 {
+  animation: navl3 0.5s forwards;
+}
+@keyframes navl3 {
+  0% {
+    border-radius: 0px 0px 0px 0px;
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-2px);
+    border-radius: 0px 0px 10px 10px;
+  }
 }
 
 .nav--link__profil {
@@ -203,8 +382,29 @@ nav img {
 .container--article {
   width: 40%;
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+}
+@media screen and (max-width: 767px) {
+  .container--article {
+    width: 70%;
+  }
+}
+.container--article .back--arrow {
+  position: fixed;
+  left: 20%;
+  font-size: 2rem;
+  text-decoration: none;
+  color: #6DAFE1;
+  border: none;
+  font-family: "Tropika Island Int Interlock";
+}
+.container--article__card {
+  width: 100%;
+  display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   gap: 1rem;
 }
@@ -213,6 +413,7 @@ nav img {
   justify-content: center;
   align-items: center;
   border: none;
+  width: 100%;
 }
 .container--article p {
   text-align: justify;
@@ -231,11 +432,44 @@ nav img {
   opacity: 0.5;
   font-family: "Tropika Island Int Interlock";
 }
+.container--article .article--commentaire__form {
+  border-radius: 10px;
+  border: solid 1px #e5ddd1;
+  padding: 0.5rem 1rem;
+}
+.container--article .article--comment__list {
+  border-bottom: solid 1px #e5ddd1;
+}
+.container--article .article--comment__list p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Baloo 2";
+  color: #005B89;
+}
+.container--article .article--comment__list p a {
+  margin-left: 1rem;
+  height: 2rem;
+}
+.container--article .article--comment__list span {
+  font-family: "Tropika Island Int Interlock";
+  font-style: italic;
+  color: #3E667D;
+  margin-left: 1rem;
+  font-size: 0.8rem;
+}
 .container--article img {
   aspect-ratio: 1.5;
   width: 90%;
   object-fit: cover;
   border-radius: 20px;
+}
+
+#comment_form div:nth-child(1) {
+  color: #005B89;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
 
 .card--container {
@@ -248,6 +482,26 @@ nav img {
   height: 100%;
   box-shadow: 0px 3px 10px 3px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+}
+@media screen and (max-width: 767px) {
+  .card--container {
+    display: block;
+    width: 80%;
+  }
+}
+.card--container a {
+  border-bottom: none;
+  color: #EEE9E1;
+  border-bottom: solid 2px #EEE9E1;
+  margin-bottom: 10px;
+}
+.card--container a span {
+  opacity: 0;
+  transition: 0.3s;
+  margin-left: 0.2rem;
+}
+.card--container a:hover span {
+  opacity: 1;
 }
 .card--container .card {
   padding: 1rem;
@@ -269,6 +523,11 @@ nav img {
   padding: 1.5rem;
   overflow: hidden;
 }
+@media screen and (max-width: 767px) {
+  .card--container .card--left {
+    width: auto;
+  }
+}
 .card--container .card--left h1 {
   line-height: 6rem;
   color: #6DAFE1;
@@ -282,6 +541,9 @@ nav img {
   font-size: 1.8rem;
   padding: 1rem;
   position: relative;
+  color: #6DAFE1;
+}
+.card--container .card--left .card--item a {
   color: #6DAFE1;
 }
 .card--container .card--left .card--item p {
@@ -319,7 +581,7 @@ nav img {
   line-height: 3.1rem;
 }
 .card--container .card--left .card--item__title:nth-child(1) {
-  border-bottom: 1px solid #3E667D;
+  border-bottom: 2px dashed #3E667D;
 }
 .card--container .card--left p {
   font-family: "Baloo 2";
@@ -344,11 +606,11 @@ nav img {
   grid-template-columns: repeat(4, minmax(50px, 1fr));
   background-color: #0075AF;
   padding: 1.5rem;
+  height: 100%;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 767px) {
   .card--container .card--right {
-    width: 100%;
-    padding: 0;
+    width: auto;
   }
 }
 .card--container .card--right .card--item {
@@ -395,6 +657,26 @@ nav img {
   margin: 2px;
 }
 
+.hover--reveal {
+  position: absolute;
+  width: 300px;
+  height: 400px;
+  pointer-events: none;
+  transform: translate(0px, 0px);
+  overflow: hidden;
+  transform: scale(0.8);
+  transition: all 0.5s ease-out;
+  opacity: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+.hover--reveal img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: text-transform 0.5s ease-out;
+}
+
 .pagination {
   box-shadow: 3px 2px 20px 8px rgba(0, 0, 0, 0.11);
   padding: 0.5rem 1rem;
@@ -405,6 +687,12 @@ nav img {
   align-content: center;
   justify-content: center;
   font-family: "Tropika Island Int Interlock";
+}
+@media screen and (max-width: 767px) {
+  .pagination {
+    width: 40%;
+    margin: auto;
+  }
 }
 .pagination .page {
   width: 1.5rem;
@@ -465,6 +753,11 @@ nav img {
   grid-gap: 30px;
   grid-template-columns: repeat(4, minmax(120px, 1fr));
 }
+@media screen and (max-width: 767px) {
+  .container--gallery {
+    display: block;
+  }
+}
 .container--gallery__author {
   opacity: 0.5;
   font-family: "Tropika Island Int Interlock";
@@ -474,6 +767,13 @@ nav img {
 .container--gallery__images {
   aspect-ratio: 1;
   position: relative;
+}
+.container--gallery__images .picture--name {
+  position: absolute;
+  top: 0%;
+  left: 2%;
+  color: #EEE9E1;
+  font-family: "Tropika Island Int Interlock";
 }
 .container--gallery__images img {
   object-fit: cover;
@@ -502,10 +802,20 @@ nav img {
 .container--gallery__images:nth-child(5) {
   grid-column: 1/3;
   grid-row: 2/4;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
+  aspect-ratio: auto;
 }
 .container--gallery__images:nth-child(15) {
   grid-column: 3/5;
   grid-row: 5/7;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
+  aspect-ratio: auto;
 }
 .container--gallery__images:hover .button--delete__gallery {
   opacity: 1;
@@ -516,6 +826,18 @@ nav img {
   display: flex;
   justify-content: space-around;
   width: 100%;
+}
+@media screen and (max-width: 767px) {
+  .container--find-us {
+    flex-direction: column;
+  }
+  .container--find-us img {
+    width: 60%;
+  }
+  .container--find-us iframe {
+    width: 95%;
+    margin: auto;
+  }
 }
 .container--find-us__infos {
   text-align: center;
@@ -719,6 +1041,10 @@ nav img {
   flex-direction: column;
   text-align: center;
 }
+.container--reservation p {
+  font-family: "Baloo 2";
+  color: #005B89;
+}
 .container--reservation #reservation_form div:nth-child(3) {
   display: flex;
   flex-direction: column;
@@ -728,6 +1054,68 @@ nav img {
   margin-bottom: 1rem;
   border: none;
   border-radius: 10px;
+}
+.container--reservation #reservation_form_bookedAt {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-around;
+}
+.container--reservation #reservation_form_bookedAt_date {
+  display: flex;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 5px;
+}
+.container--reservation #reservation_form_bookedAt_date select {
+  width: 5rem;
+}
+.container--reservation #reservation_form_bookedAt_time {
+  display: flex;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 5px;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateY(-2rem) rotate(5deg);
+  }
+  5% {
+    transform: translateY(-1.8rem) rotate(5deg);
+  }
+  50% {
+    transform: translateY(2rem) rotate(0deg);
+  }
+  95% {
+    transform: translateY(-1.8rem) rotate(5deg);
+  }
+  100% {
+    transform: translateY(-2rem) rotate(5deg);
+  }
+}
+@media screen and (min-width: 767px) {
+  nav.fade--in {
+    animation: fade-in 0.5s cubic-bezier(0.26, 0.66, 0.37, 0.96) forwards;
+  }
+  nav.fade--out {
+    animation: fade-out 0.5s cubic-bezier(0.26, 0.66, 0.37, 0.96) forwards;
+  }
+  @keyframes fade-out {
+    0% {
+      transform: translateY(0px);
+    }
+    100% {
+      transform: translateY(-300px);
+    }
+  }
+  @keyframes fade-in {
+    0% {
+      transform: translateY(-300px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

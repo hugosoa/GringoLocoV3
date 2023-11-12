@@ -37,6 +37,9 @@ class Gallery
     #[ORM\Column]
     #[Gedmo\Timestampable(on: "create")]
     private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'galleries')]
+    private ?Cocktail $cocktailName = null;
     public function getId(): ?int
     {
         return $this->id;
@@ -109,4 +112,16 @@ class Gallery
 
     //     return $this;
     // }
+
+    public function getCocktailName(): ?Cocktail
+    {
+        return $this->cocktailName;
+    }
+
+    public function setCocktailName(?Cocktail $cocktailName): static
+    {
+        $this->cocktailName = $cocktailName;
+
+        return $this;
+    }
 }

@@ -1,13 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réservation Gringo Loco
+{% block title %}Gringo Loco - Réservation
 {% endblock %}
 
 {% block body %}
 	<div class="container ">
 		<div class="container--reservation">
+			{% for message in app.flashes('success') %}
+				<div class="alert alert--success">
+					{{ message }}
+				</div>
+			{% endfor %}
 			<h1>Demande de réservation</h1>
-			{{form(form)}}
-			</div>
-		</div>
-	{% endblock %}
+			{% if is_granted("ROLE_USER") and app.user.isVerified %}
+				{{form(form)}}
+
+					{% else %}
+						<div class="article--commentaire__form">
+							<p>Vous devez crée un compte et vérifié votre mail pour pouvoir réservé !</p>
+						</div>
+					</div>
+				{% endif %}
+			{% endblock %}

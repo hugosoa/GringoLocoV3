@@ -39,12 +39,12 @@ class UserCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->setDisabled()->onlyWhenUpdating()->hideOnindex(),
-            TextField::new('firstName')->setDisabled()->onlyWhenUpdating()->onlyOnIndex(),
-            TextField::new('firstName')->onlyWhenCreating(),
-            TextField::new('firstName')->onlyWhenUpdating()->setDisabled(),
-            TextField::new('lastName')->setDisabled()->onlyWhenUpdating()->onlyOnIndex(),
-            TextField::new('lastName')->onlyWhenCreating(),
-            TextField::new('lastName')->onlyWhenUpdating()->setDisabled(),
+            TextField::new('firstName', 'Prénom')->setDisabled()->onlyWhenUpdating()->onlyOnIndex(),
+            TextField::new('firstName', 'Prénom')->onlyWhenCreating(),
+            TextField::new('firstName', 'Prénom')->onlyWhenUpdating()->setDisabled(),
+            TextField::new('lastName', 'Nom')->setDisabled()->onlyWhenUpdating()->onlyOnIndex(),
+            TextField::new('lastName', 'Nom')->onlyWhenCreating(),
+            TextField::new('lastName', 'Nom')->onlyWhenUpdating()->setDisabled(),
             TextField::new('pseudo')->setDisabled()->onlyWhenUpdating()->onlyOnIndex(),
             TextField::new('pseudo')->onlyWhenCreating(),
             TextField::new('pseudo')->onlyWhenUpdating()->setDisabled(),
@@ -54,7 +54,7 @@ class UserCrudController extends AbstractCrudController
             TextField::new('password')->setDisabled()->hideOnForm()->hideOnIndex(),
             TextField::new('password')->onlyWhenCreating(),
             ArrayField::new('roles'),
-            BooleanField::new('isVerified'),
+            BooleanField::new('isVerified', 'Compte vérifié'),
         ];
     }
 }

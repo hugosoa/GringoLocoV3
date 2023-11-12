@@ -39,16 +39,16 @@ class GalleryCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->setDisabled()->onlyWhenUpdating()->hideOnindex(),
-            TextField::new('author')->setDisabled()->onlyWhenUpdating()->onlyOnIndex(),
-            TextField::new('author')->onlyWhenCreating(),
+            TextField::new('author', 'Auteur')->setDisabled()->onlyWhenUpdating()->onlyOnIndex(),
+            TextField::new('author', 'Auteur')->onlyWhenCreating(),
             ImageField::new('imageName', 'Image')
                 ->onlyOnIndex()
                 ->setBasePath('/images/posts')->hideOnForm(),
-            TextField::new('imageFile')->setFormType(VichImageType::class)->onlyWhenUpdating()->setDisabled(),
-            TextField::new('imageFile')->setFormType(VichImageType::class)->onlyWhenCreating(),
+            TextField::new('imageFile', 'Image')->setFormType(VichImageType::class)->onlyWhenUpdating()->setDisabled(),
+            TextField::new('imageFile', 'Image')->setFormType(VichImageType::class)->onlyWhenCreating(),
             IntegerField::new('imageSize')->hideOnDetail()->hideOnForm()->hideOnIndex(),
-            DateTimeField::new('createdAt')->hideOnForm(),
-            DateTimeField::new('updatedAt')->hideOnForm()
+            DateTimeField::new('createdAt', 'Crée le')->hideOnForm(),
+            DateTimeField::new('updatedAt', "Mis à jour le")->hideOnForm()
         ];
     }
 }

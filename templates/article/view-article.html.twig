@@ -1,12 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ArticleController!
+{% block title %}
+	{{ articles.title }}
 {% endblock %}
 
 {% block body %}
 	<div class="container">
-
 		<div class="container--article">
+			<a href="{{path('app_back')}}" class="back--arrow">
+				&larr;
+			</a>
 
 			<h2>{{ articles.title}}</h2>
 			<a href="{{path('app_view_articles', {slug: articles.slug}) }}" class="container--article__link">
@@ -23,26 +26,48 @@
 					{% endif %}
 				</span>
 				<span class="container--article__actions">
-					{% if is_granted("ROLE_USER") %}
+					{% if is_granted("ROLE_EDITOR") %}
 						<a href="{{path('app_edit_articles', {slug: articles.slug })}}" class="button--edit">Modifier</a>
 						<a href="{{path('app_delete_articles', {slug: articles.slug, _csrf_token: csrf_token('delete-article') })}}" class="button--delete">Supprimer</a>
 					{% endif %}
 				</span>
 			</span>
-			{{form(form)}}
-				{% for comment in comments %}
-					{% if comment.article.id == articles.id %}
-						<div>
-							{{comment.content}}<br>
-							{{comment.author.pseudo}}
-						</div>
-					{% endif %}
+			<div>
+				<h2>Commentaires</h2>
+				{% if is_granted("ROLE_USER") and app.user.isVerified %}
+					{{form(form)}}
 
-				{% endfor %}
+						{% else %}
+							<div class="article--commentaire__form">
+								<p>Vous devez crée un compte et vérifié votre mail pour pouvoir poster un commentaire !</p>
+
+							{% endif %}
+						</div>
+
+						{% for comment in comments %}
+							{% if comment.article.id == articles.id %}
+								<div class="article--comment__list">
+									<p>{{comment.content}}
+										{% if (comment.author.id == app.user.id) and (is_granted("ROLE_USER")) %}
+											<a href="{{path('app_delete_comment', {id: comment.id, _csrf_token: csrf_token('delete-comment')}) }}" class="button--delete button--delete__comment">
+												Supprimé
+											</a>
+										{% endif %}
+									</p>
+									<span>
+										{{comment.author.pseudo }}
+									</span>
+									<span>
+										{{ comment.createdAt | date('d/m/Y')}}
+									</span>
+								</div>
+							{% endif %}
+						{% endfor %}
+
+
+					</div>
+				</div>
 			</div>
 		</div>
-		{% if is_granted("ROLE_USER") %}
-			<a href="{{path('app_add_articles')}}" class="button__add">+</a>
-		{% endif %}
-
-	{% endblock %}
+	</div>
+{% endblock %}

@@ -12,8 +12,17 @@
 		{% endblock %}
 
 		{% block javascripts %}{% endblock %}
+		<script src="{{ asset('js/loader.js') }}" defer></script>
+		<script src="{{ asset('js/nav.js') }}" defer></script>
+		<script src="{{ asset('js/navburger.js') }}" defer></script>
 	</head>
 	<body>
+		{% block loader %}
+			<div class="loader">
+				<img src="{{ asset('images/loader/shaker-loader.png')}}" alt="shaker loader">
+			</div>
+		{% endblock %}
+
 		{% block header %}
 			{% block nav %}
 				<nav>
@@ -49,6 +58,11 @@
 				<a href="{{ path('app_profil') }}" class="nav--link__profil">
 					<img src="{{ asset('images/header/user-logo.png') }}" alt="lien profil utilisateur">
 				</a>
+				<div class="nav--open">
+					<span class="line l1"></span>
+					<span class="line l2"></span>
+					<span class="line l3"></span>
+				</div>
 			{% endblock %}
 		{% endblock %}
 		{% block body %}{% endblock %}

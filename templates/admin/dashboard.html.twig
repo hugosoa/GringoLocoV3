@@ -1,5 +1,54 @@
 {% extends "@EasyAdmin/page/content.html.twig" %}
 
+{% block stylesheet %}
+	<link rel="stylesheet" href="{{ asset('styles/easyadmin-custom.css')}}">
+	a
+{% endblock %}
+
 {% block content %}
-	<h1>Administration du site Gringo Loco</h1>
+	<div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Numéro de téléphone</th>
+					<th>Nombre de personnes</th>
+					<th>Demande spéciale</th>
+					<th>Demande pour le</th>
+					<th>Demande faite le</th>
+					<!-- Ajoutez plus d'en-têtes de tableau pour d'autres propriétés de réservation -->
+				</tr>
+			</thead>
+			<tbody>
+				{% for reservation in getAllReservations %}
+					<tr>
+						<td>{{ reservation.numTel }}</td>
+						<td>{{ reservation.nbrPeople }}</td>
+						<td>{{ reservation.specialAsk}}</td>
+						<td>{{ reservation.bookedAt|date('Y-m-d H:i:s') }}</td>
+						<td>{{ reservation.createdAt|date('Y-m-d H:i:s') }}</td>
+
+						<!-- Ajoutez plus de cellules de tableau pour d'autres propriétés de réservation -->
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<table class="table">
+			<thead>
+				<tr>
+					{# <th>Auteur</th> #}
+					<th>Contenu</th>
+					<!-- Ajoutez plus d'en-têtes de tableau pour d'autres propriétés de réservation -->
+				</tr>
+			</thead>
+			<tbody>
+				test
+				{% for comment in getAllComments %}
+					<tr>
+						<td>{{ comment.content }}</td>
+						<!-- Ajoutez plus de cellules de tableau pour d'autres propriétés de réservation -->
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 {% endblock %}

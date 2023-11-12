@@ -31,11 +31,25 @@ class Cocktail
     #[ORM\ManyToMany(targetEntity: Ingredient::class, inversedBy: 'cocktails')]
     private Collection $ingredient;
 
+    #[ORM\OneToOne(inversedBy: 'cocktail', cascade: ['persist', 'remove'])]
+    private ?Article $link = null;
+
+    #[ORM\OneToMany(mappedBy: 'cocktailName', targetEntity: Gallery::class)]
+    private Collection $galleries;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'cocktails')]
+    private Collection $likeCocktail;
+
     public function __construct()
     {
         $this->ingredient = new ArrayCollection();
+        $this->galleries = new ArrayCollection();
+        $this->likeCocktail = new ArrayCollection();
     }
-
+    public function __toString()
+    {
+        return $this->getName();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -111,5 +125,76 @@ class Cocktail
         $this->ingredient->removeElement($ingredient);
 
         return $this;
+    }
+
+    public function getLink(): ?Article
+    {
+        return $this->link;
+    }
+
+    public function setLink(?Article $link): static
+    {
+        $this->link = $link;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Gallery>
+     */
+    public function getGalleries(): Collection
+    {
+        return $this->galleries;
+    }
+
+    public function addGallery(Gallery $gallery): static
+    {
+        if (!$this->galleries->contains($gallery)) {
+            $this->galleries->add($gallery);
+            $gallery->setCocktailName($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGallery(Gallery $gallery): static
+    {
+        if ($this->galleries->removeElement($gallery)) {
+            // set the owning side to null (unless already changed)
+            if ($gallery->getCocktailName() === $this) {
+                $gallery->setCocktailName(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getLikeCocktail(): Collection
+    {
+        return $this->likeCocktail;
+    }
+
+    public function addLikeCocktail(User $likeCocktail): static
+    {
+        if (!$this->likeCocktail->contains($likeCocktail)) {
+            $this->likeCocktail->add($likeCocktail);
+        }
+
+        return $this;
+    }
+
+    public function removeLikeCocktail(User $likeCocktail): static
+    {
+        $this->likeCocktail->removeElement($likeCocktail);
+
+        return $this;
+    }
+
+    public function isLikedByUser(User $user): bool
+    {
+        return $this->likeCocktail->contains($user);
     }
 }

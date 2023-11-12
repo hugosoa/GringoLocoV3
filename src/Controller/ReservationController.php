@@ -25,16 +25,18 @@ class ReservationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $reservation->setAuthor($this->getUser());
             $em = $doctrine->getManager();
             $em->persist($reservation);
             $em->flush();
             // dd($reservation);
-            $email = (new Email())
-                ->from($reservation->getResName())
-                ->to('admin@gringoloco.com')
-                ->subject('Réservation ', $reservation->getResName())
-                ->html($reservation->getSpecialAsk(), 'Numéro de téléphone : ', $reservation->getNumTel());
-            $mailer->send($email);
+            // $email = (new Email())
+            //     ->from($this->getUser()->getEmail())
+            //     ->to('admin@gringoloco.com')
+            //     ->subject('Réservation')
+            //     ->html($reservation->getSpecialAsk(), 'Numéro de téléphone : ', $reservation->getNumTel());
+            // $mailer->send($email);
+            $this->addFlash('success', 'Demande de réservation prise en compte');
         }
 
         return $this->render('reservation/index.html.twig', [

@@ -54,9 +54,17 @@ class Article
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Comment::class)]
     private Collection $comments;
 
+    #[ORM\OneToOne(mappedBy: 'link', cascade: ['persist', 'remove'])]
+    private ?Cocktail $cocktail = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getTitle();
     }
 
     /**
@@ -211,7 +219,25 @@ class Article
         return $this;
     }
 
+    public function getCocktail(): ?Cocktail
+    {
+        return $this->cocktail;
+    }
 
+    public function setCocktail(?Cocktail $cocktail): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($cocktail === null && $this->cocktail !== null) {
+            $this->cocktail->setLink(null);
+        }
 
+        // set the owning side of the relation if necessary
+        if ($cocktail !== null && $cocktail->getLink() !== $this) {
+            $cocktail->setLink($this);
+        }
 
+        $this->cocktail = $cocktail;
+
+        return $this;
+    }
 }

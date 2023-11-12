@@ -8,7 +8,10 @@ use App\Entity\Cocktail;
 use App\Entity\Comment;
 use App\Entity\Gallery;
 use App\Entity\Ingredient;
+use App\Entity\Reservation;
 use App\Entity\User;
+use App\Repository\CommentRepository;
+use App\Repository\ReservationRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -17,10 +20,29 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
+    private ReservationRepository $reservationRepository;
+    private CommentRepository $commentRepository;
+
+    public function __construct(ReservationRepository $reservationRepository, CommentRepository $commentRepository)
+    {
+        $this->reservationRepository = $reservationRepository;
+        $this->commentRepository = $commentRepository;
+    }
+
+
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        return $this->render('admin/dashboard.html.twig');
+
+
+        $getAllReservations = $this->reservationRepository->findAll();
+        $getAllComments = $this->commentRepository->findAll();
+        // dd($getAllReservations);
+
+        return $this->render('admin/dashboard.html.twig', [
+            'getAllReservations' => $getAllReservations,
+            'getAllComments' => $getAllComments
+        ]);
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
@@ -49,12 +71,26 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+
+        // Gestion des utilisateurs
+        yield MenuItem::section('Gestion des utilisateurs', 'fas fa-users');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
+
+        // Gestion du contenu
+        yield MenuItem::section('Gestion du contenu', 'fas fa-cog');
         yield MenuItem::linkToCrud('Articles', 'fas fa-newspaper', Article::class);
         yield MenuItem::linkToCrud('Gallerie', 'fas fa-image', Gallery::class);
         yield MenuItem::linkToCrud('Cocktails', 'fas fa-cocktail', Cocktail::class);
         yield MenuItem::linkToCrud('Ingredients', 'fas fa-list', Ingredient::class);
         yield MenuItem::linkToCrud('Categories', 'fas fa-table-columns', Category::class);
         yield MenuItem::linkToCrud('Commentaires', 'fas fa-comment', Comment::class);
+
+        // Réservation
+        yield MenuItem::section('Réservation', 'fas fa-calendar');
+        yield MenuItem::linkToCrud('Réservation', 'fas fa-calendar-days', Reservation::class);
+
+        // Retour au site public
+        yield MenuItem::section('Retourner sur le site', 'fas fa-right-from-bracket');
+        yield MenuItem::linkToUrl('Retourner sur le site', 'fa fa-globe', '/');
     }
 }

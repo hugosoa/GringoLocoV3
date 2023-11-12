@@ -44,21 +44,21 @@ class ArticleCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->setDisabled()->onlyWhenUpdating()->hideOnindex(),
-            AssociationField::new('author')->hideOnForm(),
-            TextField::new('title')->setDisabled()->onlyWhenUpdating()->onlyOnIndex(),
-            TextField::new('title')->onlyWhenCreating(),
-            TextField::new('title')->onlyWhenUpdating()->setDisabled(),
+            AssociationField::new('author', 'Auteur')->hideOnForm(),
+            TextField::new('title', 'Titre')->setDisabled()->onlyWhenUpdating()->onlyOnIndex(),
+            TextField::new('title', 'Titre')->onlyWhenCreating(),
+            TextField::new('title', 'Titre')->onlyWhenUpdating()->setDisabled(),
             TextField::new('slug')->hideOnForm()->hideOnIndex(),
             ImageField::new('imageName', 'Image')
                 ->onlyOnIndex()
                 ->setBasePath('/images/posts')->hideOnForm(),
-            TextField::new('imageFile')->setFormType(VichImageType::class)->onlyWhenUpdating()->setDisabled(),
-            TextField::new('imageFile')->setFormType(VichImageType::class)->onlyWhenCreating(),
-            TextField::new('content')->setDisabled()->onlyWhenUpdating()->onlyOnIndex(),
-            TextEditorField::new('content')->onlyWhenCreating(),
-            TextField::new('content')->onlyWhenUpdating()->setFormTypeOption('disabled', 'disabled'),
-            DateTimeField::new('createdAt')->hideOnForm(),
-            DateTimeField::new('updatedAt')->hideOnForm(),
+            TextField::new('imageFile', 'Image')->setFormType(VichImageType::class)->onlyWhenUpdating()->setDisabled(),
+            TextField::new('imageFile', 'Image')->setFormType(VichImageType::class)->onlyWhenCreating(),
+            TextField::new('content', 'Contenu')->setDisabled()->onlyWhenUpdating()->onlyOnIndex(),
+            TextEditorField::new('content', 'Contenu')->onlyWhenCreating(),
+            TextField::new('content', 'Contenu')->onlyWhenUpdating()->setFormTypeOption('disabled', 'disabled'),
+            DateTimeField::new('createdAt', 'Crée le')->hideOnForm(),
+            DateTimeField::new('updatedAt', 'Mis à jour le ')->hideOnForm(),
             IntegerField::new('imageSize')->hideOnForm()->hideOnIndex(),
         ];
     }

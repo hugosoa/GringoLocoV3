@@ -40,11 +40,11 @@ class CommentCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->setDisabled()->onlyWhenUpdating()->hideOnindex(),
-            TextField::new('author')->setDisabled()->onlyOnIndex(),
-            AssociationField::new('author')->onlyWhenCreating()->setDisabled(),
-            TextField::new('content')->setDisabled()->onlyWhenUpdating()->onlyOnIndex(),
-            TextField::new('content')->onlyWhenCreating(),
-            TextField::new('content')->onlyWhenUpdating()->setDisabled(),
+            TextField::new('author', 'Auteur')->setDisabled()->onlyOnIndex(),
+            AssociationField::new('author', 'Auteur')->onlyWhenCreating()->setDisabled(),
+            TextField::new('content', 'Contenu')->setDisabled()->onlyWhenUpdating()->onlyOnIndex(),
+            TextField::new('content', 'Contenu')->onlyWhenCreating(),
+            TextField::new('content', 'Contenu')->onlyWhenUpdating()->setDisabled(),
         ];
     }
 }

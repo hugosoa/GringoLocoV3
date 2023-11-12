@@ -2,7 +2,7 @@
 {% block javascripts %}
 	<script src="{{ asset('js/profilSliders.js') }}" defer></script>
 {% endblock %}
-{% block title %}Hello ProfilController!
+{% block title %}Gringo Loco - Profil
 {% endblock %}
 
 {% block body %}
@@ -10,7 +10,7 @@
 		<div class="container--infos">
 			<div class="container--infos__user">
 				{% for message in app.flashes('success') %}
-					<div class="alert alert__success">
+					<div class="alert alert--success">
 						{{ message }}
 					</div>
 				{% endfor %}

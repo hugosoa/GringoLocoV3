@@ -65,11 +65,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
+    #[ORM\ManyToMany(targetEntity: Cocktail::class, mappedBy: 'likeCocktail')]
+    private Collection $cocktails;
+
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Reservation::class)]
+    private Collection $reservations;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
         // $this->comments = new ArrayCollection();
         $this->galleries = new ArrayCollection();
+        $this->cocktails = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     public function __toString()
@@ -333,6 +341,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($comment->getAuthor() === $this) {
                 $comment->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cocktail>
+     */
+    public function getCocktails(): Collection
+    {
+        return $this->cocktails;
+    }
+
+    public function addCocktail(Cocktail $cocktail): static
+    {
+        if (!$this->cocktails->contains($cocktail)) {
+            $this->cocktails->add($cocktail);
+            $cocktail->addLikeCocktail($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCocktail(Cocktail $cocktail): static
+    {
+        if ($this->cocktails->removeElement($cocktail)) {
+            $cocktail->removeLikeCocktail($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getAuthor() === $this) {
+                $reservation->setAuthor(null);
             }
         }
 
