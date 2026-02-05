@@ -14,7 +14,7 @@ use Symfony\Bundle\MakerBundle\Doctrine\RelationOneToMany;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class GalleryFormType extends AbstractType
+class PictureFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
